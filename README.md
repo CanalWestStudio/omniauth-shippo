@@ -13,4 +13,4 @@ In `config/initializers/tradegecko.rb`
 ```
 
 ## Questions
-Contact me at [bradleypriest@gmail.com](mailto:bradleypriest@gmail.com) or [@bradleypriest](http://twitter.com/bradleypriest)
+Contact me at [bradley@tradegecko.com](mailto:bradley@tradegecko.com) or [@bradleypriest](http://twitter.com/bradleypriest)
