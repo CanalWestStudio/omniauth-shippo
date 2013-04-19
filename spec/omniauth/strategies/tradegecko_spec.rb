@@ -20,6 +20,7 @@ describe OmniAuth::Strategies::TradeGecko do
       strategy.stub(:raw_info) do
         {
           "first_name" => "Invader",
+          "account_id" => 1,
           "last_name"  => "Zim",
           "email"      => "invaderzim@example.com"
         }
@@ -27,9 +28,11 @@ describe OmniAuth::Strategies::TradeGecko do
     end
     it "exposes user info" do
       strategy.info.should eql({
+        account_id: 1,
         first_name: "Invader",
         last_name:  "Zim",
-        email:      "invaderzim@example.com"
+        email:      "invaderzim@example.com",
+        full_name:  "Invader Zim"
       })
     end
   end

@@ -14,14 +14,20 @@ module OmniAuth
 
       info do
         {
+          account_id: raw_info["account_id"],
+          email:      raw_info["email"],
           first_name: raw_info["first_name"],
           last_name:  raw_info["last_name"],
-          email:      raw_info["email"]
+          full_name:  full_name
         }
       end
 
       def raw_info
         @raw_info ||= access_token.get('/users/current').parsed["user"]
+      end
+
+      def full_name
+        [raw_info["first_name"], raw_info["last_name"]].compact.join(" ")
       end
     end
   end
