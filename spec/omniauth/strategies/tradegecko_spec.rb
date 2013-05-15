@@ -28,11 +28,10 @@ describe OmniAuth::Strategies::TradeGecko do
     end
     it "exposes user info" do
       strategy.info.should eql({
-        account_id: 1,
         first_name: "Invader",
         last_name:  "Zim",
         email:      "invaderzim@example.com",
-        full_name:  "Invader Zim"
+        name:       "Invader Zim"
       })
     end
   end
