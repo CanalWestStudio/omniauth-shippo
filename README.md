@@ -1,4 +1,4 @@
-# Omniauth::TradeGecko
+# Omniauth::TradeGecko [![Build Status](https://travis-ci.org/tradegecko/omniauth-tradegecko.png)](https://travis-ci.org/tradegecko/omniauth-tradegecko)
 
 This is the TradeGecko strategy for authenticating to TradeGecko via OmniAuth. 
 For more information about the TradeGecko API check out [http://tradegecko.com/apps/api](http://tradegecko.com/apps/api)
