@@ -7,7 +7,7 @@ For more information about the TradeGecko API check out [http://tradegecko.com/a
 In `config/initializers/tradegecko.rb`
 
 ```ruby
-  use OmniAuth::Builder do
+  Rails.application.config.middleware.use OmniAuth::Builder do
     provider :tradegecko, ENV['TRADEGECKO_ID'], ENV['TRADEGECKO_SECRET']
   end
 ```
