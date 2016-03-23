@@ -4,20 +4,20 @@ describe OmniAuth::Strategies::TradeGecko do
   let(:strategy) do
     OmniAuth::Strategies::TradeGecko.new({})
   end
-  context :options do
-    subject { strategy.options }
-    its(:name) { should eql :tradegecko }
+
+  it :options do
+    expect(strategy.options.name).to eql :tradegecko
   end
 
-  context :client_options do
-    subject { strategy.options.client_options }
-    its(:site)            { should eql "https://api.tradegecko.com" }
-    its(:authorize_path)  { should eql "/oauth/authorize" }
+  it :client_options do
+    client_options = strategy.options.client_options
+    expect(client_options.site).to eql "https://api.tradegecko.com"
+    expect(client_options.authorize_path).to eql "/oauth/authorize"
   end
 
   context :raw_info do
     before do
-      strategy.stub(:raw_info) do
+      allow(strategy).to receive(:raw_info) do
         {
           "first_name" => "Invader",
           "account_id" => 1,
@@ -26,8 +26,9 @@ describe OmniAuth::Strategies::TradeGecko do
         }
       end
     end
+
     it "exposes user info" do
-      strategy.info.should eql({
+      expect(strategy.info).to eql({
         first_name: "Invader",
         last_name:  "Zim",
         email:      "invaderzim@example.com",
