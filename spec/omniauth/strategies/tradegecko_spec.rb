@@ -23,7 +23,6 @@ describe OmniAuth::Strategies::TradeGecko do
           "account_id" => 1,
           "last_name"  => "Zim",
           "email"      => "invaderzim@example.com",
-          "account_id" => 1,
           "login_id"   => 2
         }
       end
