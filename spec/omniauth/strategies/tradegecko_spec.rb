@@ -39,4 +39,13 @@ describe OmniAuth::Strategies::TradeGecko do
       })
     end
   end
+
+  describe '#callback_url' do
+    it 'is a combination of host, script name, and callback path' do
+      allow(strategy).to receive(:full_host).and_return('https://example.com')
+      allow(strategy).to receive(:script_name).and_return('/sub_uri')
+
+      expect(strategy.callback_url).to eq('https://example.com/sub_uri/auth/tradegecko/callback')
+    end
+  end
 end

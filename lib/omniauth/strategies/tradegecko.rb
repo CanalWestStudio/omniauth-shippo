@@ -36,6 +36,10 @@ module OmniAuth
       def full_name
         [raw_info["first_name"], raw_info["last_name"]].compact.join(" ")
       end
+
+      def callback_url
+        full_host + script_name + callback_path
+      end
     end
   end
 end
