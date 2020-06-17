@@ -9,17 +9,10 @@ module OmniAuth
 
       option :client_options, {
         site: 'https://goshippo.com',
-        authorize_path: '/oauth/authorize'
+        token_url: '/oauth/access_token'
       }
 
       uid { Digest::SHA256.base64digest(raw_info['access_token']) }
-
-      info do
-        {
-          scope: raw_info['scope'],
-          token_type: raw_info['token_type']
-        }
-      end
 
       def callback_url
         full_host + script_name + callback_path

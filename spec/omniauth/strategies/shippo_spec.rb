@@ -14,27 +14,7 @@ RSpec.describe OmniAuth::Strategies::Shippo do
   it :client_options do
     client_options = strategy.options.client_options
     expect(client_options.site).to eql 'https://goshippo.com'
-    expect(client_options.authorize_path).to eql '/oauth/authorize'
-  end
-
-  context :raw_info do
-    before do
-      allow(strategy).to receive(:raw_info) do
-        {
-          'scope' => '*',
-          'token_type' => 'bearer',
-          'access_token' => 'oauth.612BUDkTaTuJP3ll5-VkebURXUIJ5Zefxwda1tpd.U_akmGaXVQl80CWPXSbueSG7NX7sNe_HvLJLN1d1pn0='
-        }
-      end
-    end
-
-    it 'exposes user info' do
-      expect(strategy.uid).to eql 'iSKWRBS3V/688fbDW2tlRdrDAJGmTEpneAfzTi1fh5A='
-      expect(strategy.info).to eql({
-        scope: '*',
-        token_type: 'bearer'
-      })
-    end
+    expect(client_options.token_url).to eql '/oauth/access_token'
   end
 
   describe '#callback_url' do
