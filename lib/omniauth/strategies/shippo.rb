@@ -12,7 +12,7 @@ module OmniAuth
         token_url: '/oauth/access_token'
       }
 
-      uid { Digest::SHA256.base64digest(raw_info['access_token']) }
+      uid { Digest::SHA256.base64digest(access_token.token) }
 
       def callback_url
         full_host + script_name + callback_path
