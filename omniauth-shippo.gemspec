@@ -14,6 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "omniauth-shippo"
   gem.require_paths = ["lib"]
   gem.version       = Omniauth::Shippo::VERSION
+  gem.license       = "MIT"
 
   gem.add_dependency 'omniauth', '~> 1.0'
   gem.add_dependency 'omniauth-oauth2', '~> 1.3'
