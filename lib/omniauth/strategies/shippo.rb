@@ -29,6 +29,12 @@ module OmniAuth
         }
       end
       
+      def authorize_params
+        super.tap do |params|
+          params.merge!(options.authorize_params) if options.authorize_params
+        end
+      end
+
       def callback_url
         full_host + script_name + callback_path
       end
