@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'omniauth-oauth2'
 
 module OmniAuth
   module Strategies
     class Shippo < OmniAuth::Strategies::OAuth2
       module Defaults
-        ACCOUNTS_ENDPOINT = 'https://api.goshippo.com/shippo-accounts'.freeze
+        ACCOUNTS_ENDPOINT = 'https://api.goshippo.com/shippo-accounts'
         REQUEST_TIMEOUT = 15 # seconds
         RETRY_COUNT = 2
       end
@@ -37,6 +39,7 @@ module OmniAuth
           end
         end
       end
+
 
       def callback_url
         full_host + script_name + callback_path
@@ -79,7 +82,7 @@ module OmniAuth
 
         parsed = response.parsed
         unless parsed.is_a?(Hash) && parsed.key?('results') && parsed['results'].is_a?(Array)
-          log(:error, "Invalid Shippo API response structure: #{parsed.inspect[0..100]}...")
+          log(:error, "Invalid Shippo API response structure")
           raise OmniAuth::Error, "Invalid API response structure from Shippo"
         end
 
@@ -90,7 +93,9 @@ module OmniAuth
 
       def results
         @results ||= begin
-          result = raw_info['results'].first || {}
+          source = raw_info['results'].first || {}
+          result = source.dup
+
 
           # Rename the problematic 'object_id' key to 'shippo_id'
           if result.key?('object_id')
@@ -107,9 +112,7 @@ module OmniAuth
       end
 
       def log(level, message)
-        OmniAuth.logger.send(level, "(shippo) #{message}")
-      rescue => e
-        # Fail silently if logging itself fails
+        OmniAuth.logger&.send(level, "(shippo) #{message}")
       end
     end
   end
