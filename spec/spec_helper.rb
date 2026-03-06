@@ -12,6 +12,8 @@ require 'webmock/rspec'
 require 'omniauth'
 require 'omniauth-shippo'
 
+OmniAuth.config.logger = Logger.new('/dev/null')
+
 RSpec.configure do |config|
   config.include WebMock::API
   config.include Rack::Test::Methods
