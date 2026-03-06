@@ -135,11 +135,11 @@ RSpec.describe OmniAuth::Strategies::Shippo do
       expect { strategy.raw_info }.to raise_error(OmniAuth::Error, /Invalid API response/)
     end
 
-    it 'accepts empty results array without raising' do
+    it 'raises on empty results array' do
       response = instance_double(OAuth2::Response, status: 200, parsed: { 'results' => [] })
       allow(access_token).to receive(:get).and_return(response)
 
-      expect { strategy.raw_info }.not_to raise_error
+      expect { strategy.raw_info }.to raise_error(OmniAuth::Error, /no account results/)
     end
   end
 
