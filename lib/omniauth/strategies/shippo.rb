@@ -31,6 +31,16 @@ module OmniAuth
         }
       end
 
+      def authorize_params
+        super.tap do |params|
+          if options.authorize_params
+            log(:info, "Shippo authorize_params: #{options.authorize_params.to_h.inspect}")
+            params.merge!(options.authorize_params) if options.authorize_params
+          end
+        end
+      end
+
+
       def callback_url
         full_host + script_name + callback_path
       end
@@ -85,6 +95,7 @@ module OmniAuth
         @results ||= begin
           source = raw_info['results'].first || {}
           result = source.dup
+
 
           # Rename the problematic 'object_id' key to 'shippo_id'
           if result.key?('object_id')
