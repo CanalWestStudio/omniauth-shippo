@@ -16,9 +16,10 @@ Gem::Specification.new do |gem|
   gem.version       = Omniauth::Shippo::VERSION
   gem.license       = "MIT"
 
-  gem.add_dependency 'omniauth'
-  gem.add_dependency 'omniauth-oauth2'
+  gem.add_dependency 'omniauth', '~> 2.0'
+  gem.add_dependency 'omniauth-oauth2', '~> 1.7'
 
+  gem.add_development_dependency 'simplecov'
   gem.add_development_dependency 'rack-test'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec', '~> 3.0'
