@@ -3,14 +3,14 @@
 require File.expand_path('lib/omniauth-shippo/version', __dir__)
 
 Gem::Specification.new do |gem|
-  gem.name          = "omniauth-shippo"
+  gem.name          = 'omniauth-shippo'
   gem.version       = Omniauth::Shippo::VERSION
-  gem.authors       = ["Bradley Priest"]
-  gem.email         = ["bradley@tradegecko.com"]
-  gem.summary       = "OmniAuth strategy for Shippo"
-  gem.description   = "OmniAuth strategy for Shippo OAuth2 API"
-  gem.homepage      = "https://github.com/CanalWestStudio/omniauth-shippo"
-  gem.license       = "MIT"
+  gem.authors       = ['Bradley Priest']
+  gem.email         = ['bradley@tradegecko.com']
+  gem.summary       = 'OmniAuth strategy for Shippo'
+  gem.description   = 'OmniAuth strategy for Shippo OAuth2 API'
+  gem.homepage      = 'https://github.com/CanalWestStudio/omniauth-shippo'
+  gem.license       = 'MIT'
 
   gem.metadata = {
     "source_code_uri"   => "https://github.com/CanalWestStudio/omniauth-shippo",
@@ -30,6 +30,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec', '~> 3.0'
   gem.add_development_dependency 'rack-test'
+  gem.add_development_dependency 'rubocop'
   gem.add_development_dependency 'webmock'
   gem.add_development_dependency 'simplecov'
 end

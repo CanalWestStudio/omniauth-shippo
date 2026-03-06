@@ -1,0 +1,33 @@
+AllCops:
+  TargetRubyVersion: 3.1
+  NewCops: enable
+  SuggestExtensions: false
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - '*.gemspec'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'lib/omniauth/strategies/shippo.rb'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'lib/omniauth/strategies/shippo.rb'
+
+Naming/FileName:
+  Exclude:
+    - 'lib/omniauth-shippo.rb'
+
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 120

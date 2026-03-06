@@ -68,11 +68,11 @@ module OmniAuth
 
         parsed = response.parsed
         unless parsed.is_a?(Hash) && parsed['results'].is_a?(Array)
-          raise OmniAuth::Error, "Invalid API response structure from Shippo"
+          raise OmniAuth::Error, 'Invalid API response structure from Shippo'
         end
 
         if parsed['results'].empty?
-          raise OmniAuth::Error, "Shippo API returned no account results"
+          raise OmniAuth::Error, 'Shippo API returned no account results'
         end
       end
 
