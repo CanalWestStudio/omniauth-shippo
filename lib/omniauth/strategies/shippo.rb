@@ -42,7 +42,7 @@ module OmniAuth
 
 
       def callback_url
-        full_host + script_name + callback_path
+        full_host + callback_path
       end
 
       def raw_info
@@ -62,7 +62,7 @@ module OmniAuth
           retries += 1
           if retries <= Defaults::RETRY_COUNT
             log(:warn, "Shippo API request failed (#{e.class.name}): #{e.message}. Retrying (#{retries}/#{Defaults::RETRY_COUNT})...")
-            sleep(0.5 * retries) # Exponential backoff
+            sleep(0.5 * (2 ** (retries - 1))) # Exponential backoff
             retry
           else
             log(:error, "Shippo API request failed after #{Defaults::RETRY_COUNT} retries: #{e.message}")
@@ -96,16 +96,11 @@ module OmniAuth
           source = raw_info['results'].first || {}
           result = source.dup
 
-
           # Rename the problematic 'object_id' key to 'shippo_id'
           if result.key?('object_id')
             result['shippo_id'] = result.delete('object_id')
             log(:debug, "Renamed 'object_id' to 'shippo_id' to avoid Ruby method conflict")
           end
-
-          # Add helpful metadata
-          result['provider'] = name.to_s
-          result['connected_at'] = Time.now.utc.iso8601
 
           result
         end

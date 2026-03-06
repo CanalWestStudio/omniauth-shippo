@@ -18,9 +18,7 @@ RSpec.describe OmniAuth::Strategies::Shippo do
   end
 
   describe '#callback_url' do
-    # Known bug: callback_path already includes script_name, so callback_url
-    # double-counts it. Fix tracked in RUB-13.
-    it 'is a combination of host, script name, and callback path', pending: 'callback_url duplicates script_name (RUB-13)' do
+    it 'is a combination of host and callback path without duplicating script_name' do
       allow(strategy).to receive(:full_host).and_return('https://example.com')
       allow(strategy).to receive(:script_name).and_return('/sub_uri')
 
