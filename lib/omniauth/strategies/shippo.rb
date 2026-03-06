@@ -31,15 +31,6 @@ module OmniAuth
         }
       end
 
-      def authorize_params
-        super.tap do |params|
-          if options.authorize_params
-            log(:info, "Merging custom authorize_params: #{options.authorize_params.to_h.keys.inspect}")
-            params.merge!(options.authorize_params)
-          end
-        end
-      end
-
       def callback_url
         full_host + script_name + callback_path
       end
@@ -110,7 +101,7 @@ module OmniAuth
       end
 
       def log(level, message)
-        OmniAuth.logger.send(level, "(shippo) #{message}")
+        OmniAuth.logger&.send(level, "(shippo) #{message}")
       end
     end
   end
