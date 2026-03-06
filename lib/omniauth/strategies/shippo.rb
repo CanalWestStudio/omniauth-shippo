@@ -5,20 +5,17 @@ require 'omniauth-oauth2'
 module OmniAuth
   module Strategies
     class Shippo < OmniAuth::Strategies::OAuth2
-      module Defaults
-        ACCOUNTS_ENDPOINT = 'https://api.goshippo.com/shippo-accounts'
-        REQUEST_TIMEOUT = 15 # seconds
-        RETRY_COUNT = 2
-      end
+      ACCOUNTS_ENDPOINT = 'https://api.goshippo.com/shippo-accounts'
+      MAX_RETRIES = 2
+      BACKOFF_BASE = 0.5 # seconds
 
       option :name, :shippo
       option :client_options, {
         site: 'https://goshippo.com',
         token_url: '/oauth/access_token',
-        request_timeout: Defaults::REQUEST_TIMEOUT
+        request_timeout: 15
       }
 
-      # Using the renamed field for the UID
       uid { results['shippo_id'] }
 
       info do
@@ -26,9 +23,7 @@ module OmniAuth
       end
 
       extra do
-        {
-          'raw_info' => raw_info
-        }
+        { 'raw_info' => raw_info }
       end
 
       def authorize_params
@@ -39,7 +34,6 @@ module OmniAuth
           end
         end
       end
-
 
       def callback_url
         full_host + callback_path
@@ -54,52 +48,37 @@ module OmniAuth
       def fetch_raw_info
         retries = 0
         begin
-          log(:info, "Fetching user data from Shippo API")
-          response = access_token.get(Defaults::ACCOUNTS_ENDPOINT)
-          validate_response(response)
+          response = access_token.get(ACCOUNTS_ENDPOINT)
+          validate_response!(response)
           response.parsed
         rescue Faraday::TimeoutError, Faraday::ConnectionFailed => e
           retries += 1
-          if retries <= Defaults::RETRY_COUNT
-            log(:warn, "Shippo API request failed (#{e.class.name}): #{e.message}. Retrying (#{retries}/#{Defaults::RETRY_COUNT})...")
-            sleep(0.5 * (2 ** (retries - 1))) # Exponential backoff
-            retry
-          else
-            log(:error, "Shippo API request failed after #{Defaults::RETRY_COUNT} retries: #{e.message}")
-            raise OmniAuth::Error, "Failed to connect to Shippo API: #{e.message}"
-          end
+          raise OmniAuth::Error, "Failed to connect to Shippo API: #{e.message}" if retries > MAX_RETRIES
+
+          log(:warn, "Shippo API request failed (#{e.class}), retry #{retries}/#{MAX_RETRIES}")
+          sleep(BACKOFF_BASE * (2**(retries - 1)))
+          retry
         rescue Faraday::Error => e
-          log(:error, "Shippo API request error: #{e.class.name} - #{e.message}")
           raise OmniAuth::Error, "Shippo API error: #{e.message}"
         end
       end
 
-      def validate_response(response)
-        unless response.status == 200
-          log(:error, "Shippo API returned non-200 status code: #{response.status}")
-          raise OmniAuth::Error, "Failed to fetch user info: HTTP #{response.status}"
-        end
+      def validate_response!(response)
+        raise OmniAuth::Error, "Shippo API returned HTTP #{response.status}" unless response.status == 200
 
         parsed = response.parsed
-        unless parsed.is_a?(Hash) && parsed.key?('results') && parsed['results'].is_a?(Array)
-          log(:error, "Invalid Shippo API response structure")
+        unless parsed.is_a?(Hash) && parsed['results'].is_a?(Array)
           raise OmniAuth::Error, "Invalid API response structure from Shippo"
-        end
-
-        if parsed['results'].empty?
-          log(:warn, "Shippo API returned empty results array")
         end
       end
 
       def results
         @results ||= begin
-          source = raw_info['results'].first || {}
+          source = raw_info['results']&.first || {}
           result = source.dup
 
-          # Rename the problematic 'object_id' key to 'shippo_id'
           if result.key?('object_id')
             result['shippo_id'] = result.delete('object_id')
-            log(:debug, "Renamed 'object_id' to 'shippo_id' to avoid Ruby method conflict")
           end
 
           result
